@@ -5,18 +5,26 @@
  */
 package tucil.dua.ai;
 
+import weka.core.converters.ConverterUtils.DataSource;
+import weka.core.Instances;
+
 /**
  *
  * @author Toshiba
  */
 public class TucilDuaAi {
     
+    static Instances datas;
     
+    public static void LoadData() throws Exception {
+        datas = DataSource.read("C:\\Program Files\\Weka-3-8\\data\\iris.arff");
+    }
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        
     }
     
 }
