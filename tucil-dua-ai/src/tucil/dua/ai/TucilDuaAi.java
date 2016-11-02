@@ -5,10 +5,13 @@
  */
 package tucil.dua.ai;
 
+import java.util.Scanner;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.trees.J48;
 import weka.core.Debug.Random;
+import weka.core.DenseInstance;
+import weka.core.Instance;
 import weka.core.converters.ConverterUtils.DataSource;
 import weka.core.Instances;
 import weka.filters.Filter;
@@ -53,9 +56,13 @@ public class TucilDuaAi {
         System.out.println(eval.toMatrixString("======Confusion Matrix======\n"));    
     }
     
+    public static void addInstance() {
+        
+    }
+    
     public static void crossValidation() throws Exception {
         Evaluation evaluation = new Evaluation(datas);
-        J48 attr_tree = new J48();
+        Classifier attr_tree = new J48();
         attr_tree.buildClassifier(datas);
         evaluation.crossValidateModel(attr_tree, datas, 10, new Random(1));
         System.out.println("=====Run Information======");
@@ -66,12 +73,38 @@ public class TucilDuaAi {
         System.out.println(evaluation.toMatrixString("======Confusion Matrix======\n"));
     }
     
+    public static void saveModel(String path, Classifier cls) throws Exception {
+        weka.core.SerializationHelper.write(path, cls);
+    }
+    
+    public static Classifier loadModel(String path) throws Exception {
+        return (Classifier) weka.core.SerializationHelper.read(path);
+    }
+    
+    public static void addInstance(Instances d){
+        Scanner input = new Scanner(System.in);
+        Instance temp = new DenseInstance(d.numAttributes());
+        for (int i= 0; i < (d.numAttributes() - 1); i++) {
+            System.out.print(d.attribute(i) + " = ");
+            Double x = input.nextDouble();
+            temp.setValue(d.attribute(i), x);
+        }
+        System.out.print(d.attribute(d.numAttributes()-1) + " = ");
+        String x = input.next();
+        temp.setValue(d.attribute(d.numAttributes()-1), x);
+        d.add(temp);
+    }
+    
+    
     public static void main(String[] args) {
         // TODO code application logic here
         TucilDuaAi test= new TucilDuaAi();
         try {
             LoadData();
-            fullTrainingSet();
+            System.out.println(datas);
+            System.out.println("=====");
+            addInstance(datas);
+            System.out.println(datas.numInstances());
         } catch (Exception e) {
             e.printStackTrace();
         }
