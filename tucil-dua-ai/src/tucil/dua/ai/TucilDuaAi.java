@@ -27,8 +27,11 @@ public class TucilDuaAi {
     public static void Classifier() throws Exception {
         Evaluation evaluation = new Evaluation(datas);
         J48 attr_tree = new J48();
+        attr_tree.buildClassifier(datas);
         evaluation.crossValidateModel(attr_tree, datas, 10, new Random(1));
-        System.out.println(evaluation.toSummaryString("\nResults\n\n", false));
+        System.out.println(evaluation.toSummaryString("====Stats======\n", true));
+        System.out.println(evaluation.toClassDetailsString("====Detailed Result=====\n"));
+        System.out.println(evaluation.toMatrixString("======Confusion Matrix======\n"));
     }
     /**
      * 
@@ -50,13 +53,13 @@ public class TucilDuaAi {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        System.out.println(datas.get(1).dataset());
-        double[] dabel = datas.instance(0).toDoubleArray();
-//        System.out.println(datas.instance(0).toDoubleArray());
-        Instance data;
-        for (int i = 0; i < dabel.length; i++) {
-            System.out.println(dabel[i]);
-        }
+////        System.out.println(datas.get(1).dataset());
+//        double[] dabel = datas.instance(0).toDoubleArray();
+////        System.out.println(datas.instance(0).toDoubleArray());
+//        Instance data;
+//        for (int i = 0; i < dabel.length; i++) {
+//            System.out.println(dabel[i]);
+//        }
     }
     
 }
